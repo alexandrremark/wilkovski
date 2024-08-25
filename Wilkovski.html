@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WILKOVSKI FINANCIAL ASSISTANT</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Tahoma', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .window {
+            width: 400px;
+            margin: 20px;
+            padding: 10px;
+            border: 2px solid #0078D7;
+            background-color: black;
+            color: green;
+            position: relative;
+        }
+
+        .title-bar {
+            background-color: #004F9E;
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        .title {
+            font-size: 14px;
+        }
+
+        .menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .menu li {
+            margin: 5px 0;
+        }
+
+        .menu a {
+            color: green;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .popup, .large-popup, .server-popup {
+            display: none;
+            border: 2px solid #0078D7;
+            background-color: black;
+            color: green;
+            position: absolute;
+            padding: 10px;
+            z-index: 10;
+        }
+
+        .popup {
+            width: 300px;
+            top: 50px;
+            left: 50px;
+        }
+
+        .popup-title-bar {
+            background-color: #004F9E;
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        .popup-title {
+            font-size: 12px;
+        }
+
+        .popup-content {
+            padding: 10px;
+        }
+
+        .popup-content p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .large-popup {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            overflow: auto;
+        }
+
+        .large-popup-title-bar {
+            background-color: #004F9E;
+            color: white;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        .large-popup-content {
+            padding: 10px;
+        }
+
+        .large-popup-content p {
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .server-popup {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="window">
+        <div class="title-bar">
+            <span class="title">WILKOVSKI FINANCIAL ASSISTANT</span>
+        </div>
+        <div class="content">
+            <ul class="menu">
+                <li><a href="#" id="money-transfers">Денежные переводы</a></li>
+                <li><a href="#" id="crypto-ton">Крипто TON</a></li>
+                <li><a href="#" id="server-connection">Связь с сервером</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="popup" id="crypto-popup">
+        <div class="popup-title-bar">
+            <span class="popup-title">Крипто TON</span>
+        </div>
+        <div class="popup-content">
+            <p id="crypto-info">Загрузка...</p>
+        </div>
+    </div>
+
+    <div class="large-popup" id="system-popup">
+        <div class="large-popup-title-bar">
+            <span class="large-popup-title">Системные процессы</span>
+        </div>
+        <div class="large-popup-content">
+            <p id="system-info">Загрузка...</p>
+            <p id="system-balance">Баланс криптовалюты: $15.00</p>
+        </div>
+    </div>
+
+    <div class="server-popup" id="server-popup">
+        <div class="server-popup-title-bar">
+            <span class="large-popup-title">Процессы майнинга TON</span>
+        </div>
+        <div class="server-popup-content" id="server-info">
+            Загрузка...
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cryptoTonLink = document.getElementById('crypto-ton');
+            const serverConnectionLink = document.getElementById('server-connection');
+            const cryptoPopup = document.getElementById('crypto-popup');
+            const systemPopup = document.getElementById('system-popup');
+            const serverPopup = document.getElementById('server-popup');
+            const cryptoInfo = document.getElementById('crypto-info');
+            const systemInfo = document.getElementById('system-info');
+            const systemBalance = document.getElementById('system-balance');
+            const serverInfo = document.getElementById('server-info');
+            
+            let balance = 15;
+            
+            const updateCryptoInfo = () => {
+                cryptoInfo.textContent = `Баланс криптовалюты: $${balance.toFixed(2)}`;
+                balance += (Math.random() * 5 + 1); // Увеличиваем баланс случайным образом
+                if (balance > 560) balance = 560; // Ограничиваем верхнюю границу
+            };
+            
+            const updateSystemInfo = () => {
+                const processes = [
+                    'Процесс A: Активен',
+                    'Процесс B: Ожидание',
+                    'Процесс C: Завершен',
+                    'Процесс D: Выполняется',
+                    'Процесс E: Приостановлен',
+                    'Процесс F: Инициализация',
+                    'Процесс G: Сбой',
+                    'Процесс H: Обработка данных'
+                ];
+                const randomProcess = processes[Math.floor(Math.random() * processes.length)];
+                systemInfo.textContent = `Системный процесс: ${randomProcess}`;
+            };
+
+            const generateServerInfo = () => {
+                const statuses = [
+                    'Майнинг TON активен.',
+                    'Проверка блокчейн транзакций...',
+                    'Обработка данных... завершено.',
+                    'Оптимизация алгоритмов...',
+                    'Проверка целостности сети...',
+                    'Майнинг скорость: 50 GH/s',
+                    'Баланс майнингового аккаунта: $25.35',
+                    'Обновление состояния...',
+                    'Синхронизация с сервером... успешна.',
+                    'Майнинг TON завершен. Ожидание новых блоков.',
+                    'Проверка целостности данных...',
+                    'Анализ производительности...',
+                    'Майнинг активен: Текущий блок - 482',
+                    'Проверка наличия ошибок...',
+                    'Загрузка новой версии майнера...',
+                    'Перезагрузка сервера майнинга...',
+                    'Проверка логов...',
+                    'Анализ блокчейна...',
+                    'Майнинг завершен, ожидание команд...'
+                ];
+                let serverText = '';
+                for (let i = 0; i < 100; i++) {
+                    serverText += `${statuses[Math.floor(Math.random() * statuses.length)]}\n`;
+                }
+                return serverText;
+            };
+
+            cryptoTonLink.addEventListener('click', () => {
+                cryptoPopup.style.display = 'block';
+                const cryptoIntervalId = setInterval(() => {
+                    updateCryptoInfo();
+                    updateSystemInfo();
+                }, 1000);
+                
+                setTimeout(() => {
+                    clearInterval(cryptoIntervalId);
+                    cryptoPopup.style.display = 'none';
+                    systemPopup.style.display = 'block';
+                    
+                    const systemIntervalId = setInterval(() => {
+                        updateSystemInfo();
+                        balance += (Math.random() * 5 + 1); // Обновляем баланс в системном окне
+                        if (balance > 560) balance = 560; // Ограничиваем верхнюю границу
+                        systemBalance.textContent = `Баланс криптовалюты: $${balance.toFixed(2)}`;
+                    }, 1000);
+                    
+                    setTimeout(() => {
+                        clearInterval(systemIntervalId);
+                        systemPopup.style.display = 'none';
+                    }, 300000); // Закрываем через 5 минут (300000 мс)
+                }, 5000); // Закрываем крипто окно через 5 секунд
+            });
+
+            serverConnectionLink.addEventListener('click', () => {
+                serverPopup.style.display = 'block';
+                serverInfo.textContent = generateServerInfo();
+                
+                const serverIntervalId = setInterval(() => {
+                    serverInfo.textContent = generateServerInfo();
+                }, 3000); // Обновляем информацию каждые 3 секунды
+                
+                setTimeout(() => {
+                    clearInterval(serverIntervalId);
+                    serverPopup.style.display = 'none';
+                }, 300000); // Закрываем через 5 минут (300000 мс)
+            });
+        });
+    </script>
+</body>
+</html>
